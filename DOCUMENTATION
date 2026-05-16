@@ -84,6 +84,12 @@ Console.back.backspace
 Console.back.enter
 → apaga 1 linha
 
+back.line(linha)
+→ volta para a linha especificada, descartando todos os estados salvos
+
+back.linesave(linha)
+→ volta para a linha especificada, mantendo os estados salvos
+
 ---
 
 7. INPUT
@@ -276,6 +282,12 @@ Console.back.backspace
 
 Console.back.enter
 → removes 1 line
+
+back.line(line)
+→ moves to specified line, discarding all saved states
+
+back.linesave(line)
+→ moves to specified line, keeping saved states
 
 ---
 
