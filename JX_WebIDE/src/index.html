@@ -6,16 +6,16 @@
     <title>JX Web IDE v0.1</title>
     <style>
         :root {
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #16213e;
-            --bg-tertiary: #0f3460;
-            --text-primary: #eee;
-            --text-secondary: #aaa;
-            --accent: #e94560;
-            --success: #4ade80;
-            --warning: #fbbf24;
-            --error: #ef4444;
-            --border: #2d3748;
+            --bg-primary: #1e1e2e;
+            --bg-secondary: #252537;
+            --bg-editor: #181825;
+            --text-primary: #cdd6f4;
+            --text-secondary: #a6adc8;
+            --accent: #89b4fa;
+            --success: #a6e3a1;
+            --warning: #f9e2af;
+            --error: #f38ba8;
+            --border: #313244;
         }
 
         * {
@@ -25,7 +25,7 @@
         }
 
         body {
-            font-family: 'Courier New', monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             height: 100vh;
@@ -33,111 +33,92 @@
         }
 
         .container {
-            display: grid;
-            grid-template-columns: 250px 1fr 300px;
-            grid-template-rows: 60px 1fr 200px;
+            display: flex;
             height: 100vh;
-            gap: 2px;
-        }
-
-        /* Header */
-        .header {
-            grid-column: 1 / -1;
-            background: var(--bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            border-bottom: 2px solid var(--accent);
-        }
-
-        .logo {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: var(--accent);
-        }
-
-        .header-buttons button {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            margin-left: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-
-        .header-buttons button:hover {
-            background: var(--accent);
-        }
-
-        /* File Explorer */
-        .file-explorer {
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border);
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .file-explorer h3 {
-            color: var(--accent);
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-
-        .file-item {
-            padding: 8px;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-bottom: 2px;
-            display: flex;
-            align-items: center;
-        }
-
-        .file-item:hover {
-            background: var(--bg-tertiary);
-        }
-
-        .file-item.active {
-            background: var(--accent);
-        }
-
-        .file-icon {
-            margin-right: 8px;
-        }
-
-        /* Editor */
-        .editor-container {
-            background: var(--bg-primary);
-            display: flex;
             flex-direction: column;
         }
 
-        .editor-tabs {
+        header {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        button.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .editor-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+        }
+
+        .file-tabs {
             display: flex;
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border);
+            overflow-x: auto;
         }
 
         .tab {
-            padding: 10px 20px;
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border: none;
+            color: var(--text-secondary);
             cursor: pointer;
             border-right: 1px solid var(--border);
-            background: var(--bg-secondary);
         }
 
         .tab.active {
-            background: var(--bg-primary);
-            border-bottom: 2px solid var(--accent);
+            background: var(--bg-editor);
+            color: var(--text-primary);
         }
 
         #editor {
             flex: 1;
-            background: var(--bg-primary);
+            background: var(--bg-editor);
             color: var(--text-primary);
             border: none;
-            padding: 20px;
+            padding: 1rem;
             font-family: 'Courier New', monospace;
             font-size: 14px;
             resize: none;
@@ -145,55 +126,55 @@
             line-height: 1.5;
         }
 
-        /* Documentation Panel */
-        .docs-panel {
+        .sidebar {
+            width: 300px;
             background: var(--bg-secondary);
+            display: flex;
+            flex-direction: column;
             border-left: 1px solid var(--border);
-            overflow-y: auto;
-            padding: 15px;
         }
 
-        .docs-panel h3 {
-            color: var(--accent);
-            margin-bottom: 15px;
-        }
-
-        .doc-section {
-            margin-bottom: 20px;
-        }
-
-        .doc-section h4 {
-            color: var(--success);
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-
-        .doc-item {
-            background: var(--bg-tertiary);
-            padding: 8px;
-            margin-bottom: 5px;
-            border-radius: 4px;
-            font-size: 0.85em;
-        }
-
-        .doc-code {
-            color: var(--warning);
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
             font-weight: bold;
         }
 
-        /* Console */
-        .console-container {
-            grid-column: 1 / -1;
-            background: #000;
-            border-top: 2px solid var(--accent);
+        .file-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .file-item {
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 0.25rem;
+        }
+
+        .file-item:hover {
+            background: var(--bg-editor);
+        }
+
+        .file-item.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .console-section {
+            height: 200px;
+            background: var(--bg-editor);
+            border-top: 1px solid var(--border);
             display: flex;
             flex-direction: column;
         }
 
         .console-header {
+            padding: 0.5rem 1rem;
             background: var(--bg-secondary);
-            padding: 5px 15px;
-            font-size: 0.8em;
+            border-bottom: 1px solid var(--border);
+            font-weight: bold;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -201,31 +182,45 @@
 
         #console {
             flex: 1;
-            padding: 15px;
+            padding: 1rem;
             overflow-y: auto;
             font-family: 'Courier New', monospace;
             font-size: 13px;
-            color: var(--success);
         }
 
-        .console-line {
-            margin-bottom: 5px;
+        .log-entry {
+            margin-bottom: 0.25rem;
             white-space: pre-wrap;
+            word-break: break-all;
         }
 
-        .console-error {
-            color: var(--error);
+        .log-info { color: var(--text-primary); }
+        .log-success { color: var(--success); }
+        .log-error { color: var(--error); }
+        .log-warning { color: var(--warning); }
+
+        .docs-panel {
+            padding: 1rem;
+            overflow-y: auto;
+            flex: 1;
         }
 
-        .console-warning {
-            color: var(--warning);
+        .docs-section {
+            margin-bottom: 1.5rem;
         }
 
-        .console-info {
+        .docs-section h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .docs-item {
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
             color: var(--text-secondary);
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -234,30 +229,23 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.7);
-            z-index: 1000;
             justify-content: center;
             align-items: center;
+            z-index: 1000;
         }
 
         .modal-content {
             background: var(--bg-secondary);
-            padding: 30px;
+            padding: 2rem;
             border-radius: 8px;
-            max-width: 500px;
-            width: 90%;
-            border: 2px solid var(--accent);
+            min-width: 300px;
         }
 
-        .modal h3 {
-            color: var(--accent);
-            margin-bottom: 20px;
-        }
-
-        .modal input, .modal textarea {
+        .modal input {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background: var(--bg-primary);
+            padding: 0.5rem;
+            margin: 1rem 0;
+            background: var(--bg-editor);
             border: 1px solid var(--border);
             color: var(--text-primary);
             border-radius: 4px;
@@ -265,621 +253,430 @@
 
         .modal-buttons {
             display: flex;
+            gap: 0.5rem;
             justify-content: flex-end;
-            gap: 10px;
         }
 
-        .modal-buttons button {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-                grid-template-rows: 60px 200px 1fr 150px;
-            }
-
-            .file-explorer, .docs-panel {
+            .sidebar {
                 display: none;
             }
-
-            .file-explorer.mobile-show, .docs-panel.mobile-show {
-                display: block;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                right: 0;
-                bottom: 200px;
-                z-index: 100;
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .console-section {
+                height: 150px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">🚀 JX Web IDE v0.1</div>
-            <div class="header-buttons">
-                <button onclick="runCode()">▶️ Executar</button>
-                <button onclick="newFile()">📄 Novo</button>
-                <button onclick="saveFile()">💾 Salvar</button>
-                <button onclick="toggleDocs()">📚 Docs</button>
+        <header>
+            <h1>🚀 JX Web IDE</h1>
+            <div class="toolbar">
+                <button onclick="runCode()">▶ Executar</button>
+                <button class="secondary" onclick="newFile()">📄 Novo</button>
+                <button class="secondary" onclick="saveFileLocal()">💾 Salvar Local</button>
+                <button class="secondary" onclick="downloadFile()">⬇ Baixar .jx</button>
+                <button class="secondary" onclick="toggleDocs()">📚 Docs</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="editor-section">
+                <div class="file-tabs" id="fileTabs"></div>
+                <textarea id="editor" placeholder="// Escreva seu código JX aqui..." spellcheck="false"></textarea>
+            </div>
+            
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">📁 Arquivos</div>
+                <div class="file-list" id="fileList"></div>
+                
+                <div class="sidebar-header">📖 Documentação</div>
+                <div class="docs-panel" id="docsPanel">
+                    <div class="docs-section">
+                        <h3>Comandos Básicos</h3>
+                        <div class="docs-item">• Console.display("texto") - Mostra no console</div>
+                        <div class="docs-item">• Console.input() - Recebe entrada</div>
+                        <div class="docs-item">• Wait(time) - Espera tempo em ms</div>
+                        <div class="docs-item">• Loop {} - Estrutura de loop</div>
+                        <div class="docs-item">• stop() - Para o loop</div>
+                    </div>
+                    <div class="docs-section">
+                        <h3>Renderização</h3>
+                        <div class="docs-item">• Console.back.backspace - Apaga caractere</div>
+                        <div class="docs-item">• Console.back.enter - Nova linha</div>
+                        <div class="docs-item">• back.line(n) - Volta linha n (descarta estados)</div>
+                        <div class="docs-item">• back.linesave(n) - Volta linha n (salva estados)</div>
+                    </div>
+                    <div class="docs-section">
+                        <h3>Operadores</h3>
+                        <div class="docs-item">• == (igual), #= (diferente)</div>
+                        <div class="docs-item">• &lt;, &gt;, +, -, *, /</div>
+                        <div class="docs-item">• "texto" + "texto" (concatenação)</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- File Explorer -->
-        <div class="file-explorer" id="fileExplorer">
-            <h3>📁 ARQUIVOS</h3>
-            <div id="fileList"></div>
-        </div>
-
-        <!-- Editor -->
-        <div class="editor-container">
-            <div class="editor-tabs" id="editorTabs"></div>
-            <textarea id="editor" placeholder="# Escreva seu código JX aqui...
-# Use Ctrl+S para salvar
-# Use Ctrl+Enter para executar"></textarea>
-        </div>
-
-        <!-- Documentation -->
-        <div class="docs-panel" id="docsPanel">
-            <h3>📚 DOCUMENTAÇÃO JX</h3>
-            <div id="docsContent"></div>
-        </div>
-
-        <!-- Console -->
-        <div class="console-container">
+        <div class="console-section">
             <div class="console-header">
-                <span>🖥️ CONSOLE</span>
-                <button onclick="clearConsole()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;">🗑️ Limpar</button>
+                <span>🖥️ Console</span>
+                <button class="secondary" style="padding: 0.25rem 0.5rem; font-size: 12px;" onclick="clearConsole()">Limpar</button>
             </div>
             <div id="console"></div>
         </div>
     </div>
 
-    <!-- New File Modal -->
     <div class="modal" id="newFileModal">
         <div class="modal-content">
-            <h3>Novo Arquivo</h3>
+            <h2>Novo Arquivo</h2>
             <input type="text" id="newFileName" placeholder="nome_do_arquivo.jx">
             <div class="modal-buttons">
-                <button class="btn-secondary" onclick="closeModal('newFileModal')">Cancelar</button>
-                <button class="btn-primary" onclick="createNewFile()">Criar</button>
+                <button class="secondary" onclick="closeModal()">Cancelar</button>
+                <button onclick="confirmNewFile()">Criar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // === JX Interpreter ===
-        class JXInterpreter {
-            constructor() {
-                this.variables = {};
-                this.consoleHistory = [];
-                this.currentLine = 0;
-                this.savedStates = {};
+        // Estado da aplicação
+        let files = {};
+        let currentFile = 'untitled.jx';
+        let savedStates = [];
+
+        // Inicialização
+        window.onload = function() {
+            loadFromStorage();
+            if (Object.keys(files).length === 0) {
+                createExampleFiles();
             }
+            openFile(currentFile);
+            renderFileList();
+            renderTabs();
+        };
 
-            log(message, type = 'info') {
-                const consoleEl = document.getElementById('console');
-                const line = document.createElement('div');
-                line.className = `console-line console-${type}`;
-                line.textContent = message;
-                consoleEl.appendChild(line);
-                consoleEl.scrollTop = consoleEl.scrollHeight;
-                this.consoleHistory.push({ message, type });
-            }
+        function createExampleFiles() {
+            files['hello_world.jx'] = `# Olá Mundo em JX
+Console.display("Olá, mundo!")
+Console.display("Bem-vindo à JX Web IDE!")`;
 
-            clearConsole() {
-                document.getElementById('console').innerHTML = '';
-                this.consoleHistory = [];
-            }
-
-            parseValue(value) {
-                value = value.trim();
-                
-                if (value.toLowerCase() === 'verdadeiro' || value === 'true') return true;
-                if (value.toLowerCase() === 'falso' || value === 'false') return false;
-                
-                if (value.startsWith('"') && value.endsWith('"')) {
-                    return value.slice(1, -1);
-                }
-                if (value.startsWith("'") && value.endsWith("'")) {
-                    return value.slice(1, -1);
-                }
-                
-                const num = parseFloat(value);
-                if (!isNaN(num)) return num;
-                
-                if (this.variables[value] !== undefined) {
-                    return this.variables[value];
-                }
-                
-                return value;
-            }
-
-            evaluateExpression(expr) {
-                expr = expr.trim();
-                
-                // Replace variables with their values
-                for (const [key, value] of Object.entries(this.variables)) {
-                    const regex = new RegExp(`\\b${key}\\b`, 'g');
-                    expr = expr.replace(regex, JSON.stringify(value));
-                }
-                
-                // Safe evaluation
-                try {
-                    // Only allow basic math operations
-                    if (/^[\d\s\+\-\*\/\(\)\.]+$/.test(expr)) {
-                        return eval(expr);
-                    }
-                    return expr;
-                } catch (e) {
-                    return expr;
-                }
-            }
-
-            execute(code) {
-                this.clearConsole();
-                this.log('=== JX Interpreter v0.1 ===', 'info');
-                this.log('Iniciando execução...', 'info');
-                
-                const lines = code.split('\n');
-                let i = 0;
-                
-                while (i < lines.length) {
-                    try {
-                        this.executeLine(lines[i].trim(), lines, i);
-                        i++;
-                    } catch (error) {
-                        this.log(`Erro na linha ${i + 1}: ${error.message}`, 'error');
-                        break;
-                    }
-                }
-                
-                this.log('=== Execução finalizada ===', 'info');
-            }
-
-            executeLine(line, allLines, currentIndex) {
-                if (!line || line.startsWith('#')) return;
-
-                line = line.trim();
-
-                // Console.display()
-                if (line.startsWith('Console.display(')) {
-                    const match = line.match(/Console\.display\((.*)\)/);
-                    if (match) {
-                        const value = this.parseValue(match[1]);
-                        this.log(value, 'info');
-                    }
-                    return;
-                }
-
-                // Console.back.backspace
-                if (line === 'Console.back.backspace') {
-                    this.log('[BACKSPACE]', 'warning');
-                    return;
-                }
-
-                // Console.back.enter
-                if (line === 'Console.back.enter') {
-                    this.log('[ENTER]', 'warning');
-                    return;
-                }
-
-                // back.line(linha) - descarta estados
-                if (line.startsWith('back.line(')) {
-                    const match = line.match(/back\.line\((\d+)\)/);
-                    if (match) {
-                        const lineNumber = parseInt(match[1]);
-                        this.log(`⬅️ Voltando para linha ${lineNumber} (estados descartados)`, 'warning');
-                        // In a real implementation, this would jump to that line
-                        // For now, we just log the action
-                    }
-                    return;
-                }
-
-                // back.linesave(linha) - salva estados
-                if (line.startsWith('back.linesave(')) {
-                    const match = line.match(/back\.linesave\((\d+)\)/);
-                    if (match) {
-                        const lineNumber = parseInt(match[1]);
-                        // Save current state
-                        this.savedStates[currentIndex] = { ...this.variables };
-                        this.log(`💾 Salvando estado e voltando para linha ${lineNumber}`, 'success');
-                        // In a real implementation, this would jump to that line
-                    }
-                    return;
-                }
-
-                // Variable declaration
-                if (line.includes('=')) {
-                    const parts = line.split('=');
-                    if (parts.length === 2) {
-                        const varName = parts[0].trim();
-                        const value = this.parseValue(parts[1].trim());
-                        this.variables[varName] = value;
-                        return;
-                    }
-                }
-
-                // Loop structure (simplified)
-                if (line.startsWith('Loop')) {
-                    this.log('🔁 Loop iniciado', 'info');
-                    return;
-                }
-
-                if (line === 'stop()') {
-                    this.log('⏹️ Loop parado', 'warning');
-                    return;
-                }
-
-                // Wait commands
-                if (line.startsWith('Wait(') || line.startsWith('Wait.frame(')) {
-                    this.log('⏳ Aguardando...', 'info');
-                    return;
-                }
-
-                // Transform commands
-                if (line.startsWith('transform.int(')) {
-                    const match = line.match(/transform\.int\((.*)\)/);
-                    if (match) {
-                        const value = this.parseValue(match[1]);
-                        this.log(`🔄 Convertido para int: ${parseInt(value)}`, 'info');
-                    }
-                    return;
-                }
-
-                // Replace command
-                if (line.startsWith('Replace(') && line.includes(') to ')) {
-                    const match = line.match(/Replace\((.*)\) to "(.*)"/);
-                    if (match) {
-                        const varName = match[1].trim();
-                        const newValue = match[2];
-                        this.variables[varName] = newValue;
-                        this.log(`🔄 ${varName} substituído por "${newValue}"`, 'success');
-                    }
-                    return;
-                }
-
-                // Input detection (simulated)
-                if (line.startsWith('input.detect(')) {
-                    this.log('⌨️ Detectando entrada...', 'info');
-                    return;
-                }
-
-                // Unknown command
-                if (line && !line.startsWith('#')) {
-                    this.log(`❓ Comando não reconhecido: ${line}`, 'warning');
-                }
-            }
-        }
-
-        // === File System (using localStorage) ===
-        class FileSystem {
-            constructor() {
-                this.files = JSON.parse(localStorage.getItem('jx_files') || '{}');
-                this.currentFile = null;
-                this.openTabs = [];
-            }
-
-            save() {
-                localStorage.setItem('jx_files', JSON.stringify(this.files));
-            }
-
-            createFile(name, content = '') {
-                if (this.files[name]) {
-                    alert('Arquivo já existe!');
-                    return false;
-                }
-                this.files[name] = { content, created: new Date().toISOString() };
-                this.save();
-                return true;
-            }
-
-            getFile(name) {
-                return this.files[name];
-            }
-
-            updateFile(name, content) {
-                if (this.files[name]) {
-                    this.files[name].content = content;
-                    this.files[name].modified = new Date().toISOString();
-                    this.save();
-                    return true;
-                }
-                return false;
-            }
-
-            deleteFile(name) {
-                delete this.files[name];
-                this.save();
-            }
-
-            listFiles() {
-                return Object.keys(this.files);
-            }
-
-            getExampleFiles() {
-                return {
-                    'hello_world.jx': `# Olá Mundo em JX
-Console.display("Olá, Mundo!")
-Console.display("Bem-vindo à JX Web IDE!")
-
-# Variáveis
-nome = "Desenvolvedor"
-Console.display("Olá, " + nome)`,
-                    
-                    'render_demo.jx': `# Demonstração de Renderização
+            files['render_demo.jx'] = `# Demo de Renderização
 Console.display("Linha 1")
 Console.display("Linha 2")
 Console.display("Linha 3")
-
-# Usando back.line (descarta estados)
 back.line(1)
-Console.display("Linha 1 atualizada")
-
-# Usando back.linesave (salva estados)
+Console.display("Linha 1 modificada!")
+Wait(1000)
 back.linesave(2)
-Console.display("Linha 2 com estado salvo")
+Console.display("Linha 2 com estado salvo")`;
 
-Console.display("Fim da demonstração")`,
-                    
-                    'variables_demo.jx': `# Demonstração de Variáveis
-# Tipos de dados em JX
+            files['concat_demo.jx'] = `# Concatenação de Strings
+var nome = "JX"
+var versao = "0.1"
+Console.display("Bem-vindo à " + nome + " versão " + versao)
+Console.display("Teste: " + "Hello" + " " + "World")`;
 
-# Inteiro
-numero = 42
-Console.display("Número: ")
-Console.display(numero)
+            currentFile = 'hello_world.jx';
+            saveToStorage();
+        }
 
-# Texto
-texto = "Hello JX"
-Console.display(texto)
-
-# Booleano
-ativo = verdadeiro
-Console.display("Ativo: ")
-Console.display(ativo)
-
-# Substituição
-Replace(numero) to "100"
-Console.display("Novo número: ")
-Console.display(numero)`
-                };
+        function loadFromStorage() {
+            const stored = localStorage.getItem('jx_files');
+            if (stored) {
+                files = JSON.parse(stored);
+                const storedCurrent = localStorage.getItem('jx_current');
+                if (storedCurrent && files[storedCurrent]) {
+                    currentFile = storedCurrent;
+                }
             }
         }
 
-        // === IDE Controller ===
-        class IDE {
-            constructor() {
-                this.fs = new FileSystem();
-                this.interpreter = new JXInterpreter();
-                this.editor = document.getElementById('editor');
-                this.docsShown = true;
-                
-                this.init();
-            }
+        function saveToStorage() {
+            localStorage.setItem('jx_files', JSON.stringify(files));
+            localStorage.setItem('jx_current', currentFile);
+        }
 
-            init() {
-                this.loadExamples();
-                this.renderFileList();
-                this.renderDocs();
-                this.setupEventListeners();
-                
-                // Open first file
-                const files = this.fs.listFiles();
-                if (files.length > 0) {
-                    this.openFile(files[0]);
-                }
-            }
-
-            loadExamples() {
-                const examples = this.fs.getExampleFiles();
-                for (const [name, content] of Object.entries(examples)) {
-                    if (!this.fs.getFile(name)) {
-                        this.fs.createFile(name, content);
-                    }
-                }
-            }
-
-            renderFileList() {
-                const fileList = document.getElementById('fileList');
-                fileList.innerHTML = '';
-                
-                const files = this.fs.listFiles();
-                files.forEach(file => {
-                    const item = document.createElement('div');
-                    item.className = 'file-item';
-                    if (file === this.fs.currentFile) {
-                        item.classList.add('active');
-                    }
-                    item.innerHTML = `<span class="file-icon">📄</span>${file}`;
-                    item.onclick = () => this.openFile(file);
-                    fileList.appendChild(item);
-                });
-            }
-
-            renderDocs() {
-                const docsContent = document.getElementById('docsContent');
-                docsContent.innerHTML = `
-                    <div class="doc-section">
-                        <h4>📤 SAÍDA</h4>
-                        <div class="doc-item"><span class="doc-code">Console.display()</span> - Mostra no console</div>
-                    </div>
-                    
-                    <div class="doc-section">
-                        <h4>⌨️ ENTRADA</h4>
-                        <div class="doc-item"><span class="doc-code">Console.input()</span> - Recebe entrada</div>
-                        <div class="doc-item"><span class="doc-code">input.detect()</span> - Detecta teclas (w,a,s,d,enter,space,escape)</div>
-                    </div>
-                    
-                    <div class="doc-section">
-                        <h4>🔁 LOOP</h4>
-                        <div class="doc-item"><span class="doc-code">Loop {}</span> - Estrutura de loop</div>
-                        <div class="doc-item"><span class="doc-code">stop()</span> - Para o loop</div>
-                        <div class="doc-item"><span class="doc-code">Wait()</span> - Espera tempo</div>
-                        <div class="doc-item"><span class="doc-code">Wait.frame()</span> - Espera frames</div>
-                    </div>
-                    
-                    <div class="doc-section">
-                        <h4>🗑️ RENDER</h4>
-                        <div class="doc-item"><span class="doc-code">Console.back.backspace</span> - Volta um caractere</div>
-                        <div class="doc-item"><span class="doc-code">Console.back.enter</span> - Volta uma linha</div>
-                        <div class="doc-item"><span class="doc-code">back.line(n)</span> - Volta p/ linha n (descarta estados)</div>
-                        <div class="doc-item"><span class="doc-code">back.linesave(n)</span> - Volta p/ linha n (salva estados)</div>
-                    </div>
-                    
-                    <div class="doc-section">
-                        <h4>🔄 TRANSFORM</h4>
-                        <div class="doc-item"><span class="doc-code">transform.int()</span> - Converte para inteiro</div>
-                        <div class="doc-item"><span class="doc-code">Replace(var) to "valor"</span> - Substitui valor</div>
-                    </div>
-                    
-                    <div class="doc-section">
-                        <h4>📊 OPERADORES</h4>
-                        <div class="doc-item"><span class="doc-code">==</span> igual | <span class="doc-code">#=</span> diferente</div>
-                        <div class="doc-item"><span class="doc-code">&lt;</span> menor | <span class="doc-code">&gt;</span> maior</div>
-                        <div class="doc-item"><span class="doc-code">+</span> soma | <span class="doc-code">-</span> subtrai</div>
-                        <div class="doc-item"><span class="doc-code">*</span> multiplica | <span class="doc-code">/</span> divide</div>
-                    </div>
-                `;
-            }
-
-            openFile(filename) {
-                const file = this.fs.getFile(filename);
-                if (file) {
-                    this.fs.currentFile = filename;
-                    this.editor.value = file.content;
-                    
-                    if (!this.fs.openTabs.includes(filename)) {
-                        this.fs.openTabs.push(filename);
-                    }
-                    
-                    this.renderFileList();
-                    this.renderTabs();
-                }
-            }
-
-            renderTabs() {
-                const tabsContainer = document.getElementById('editorTabs');
-                tabsContainer.innerHTML = '';
-                
-                this.fs.openTabs.forEach(tab => {
-                    const tabEl = document.createElement('div');
-                    tabEl.className = 'tab';
-                    if (tab === this.fs.currentFile) {
-                        tabEl.classList.add('active');
-                    }
-                    tabEl.textContent = tab;
-                    tabEl.onclick = () => this.openFile(tab);
-                    tabsContainer.appendChild(tabEl);
-                });
-            }
-
-            setupEventListeners() {
-                // Save on Ctrl+S
-                document.addEventListener('keydown', (e) => {
-                    if (e.ctrlKey && e.key === 's') {
-                        e.preventDefault();
-                        this.saveCurrentFile();
-                    }
-                    if (e.ctrlKey && e.key === 'Enter') {
-                        e.preventDefault();
-                        runCode();
-                    }
-                });
-
-                // Auto-save on edit
-                this.editor.addEventListener('input', () => {
-                    if (this.fs.currentFile) {
-                        this.fs.updateFile(this.fs.currentFile, this.editor.value);
-                    }
-                });
-            }
-
-            saveCurrentFile() {
-                if (this.fs.currentFile) {
-                    this.fs.updateFile(this.fs.currentFile, this.editor.value);
-                    this.interpreter.log('💾 Arquivo salvo!', 'success');
-                }
-            }
-
-            toggleDocs() {
-                const docsPanel = document.getElementById('docsPanel');
-                this.docsShown = !this.docsShown;
-                docsPanel.style.display = this.docsShown ? 'block' : 'none';
+        function renderFileList() {
+            const list = document.getElementById('fileList');
+            list.innerHTML = '';
+            for (let filename in files) {
+                const item = document.createElement('div');
+                item.className = 'file-item' + (filename === currentFile ? ' active' : '');
+                item.textContent = '📄 ' + filename;
+                item.onclick = () => openFile(filename);
+                list.appendChild(item);
             }
         }
 
-        // === Global Functions ===
-        let ide;
-
-        function initIDE() {
-            ide = new IDE();
+        function renderTabs() {
+            const tabs = document.getElementById('fileTabs');
+            tabs.innerHTML = '';
+            for (let filename in files) {
+                const tab = document.createElement('button');
+                tab.className = 'tab' + (filename === currentFile ? ' active' : '');
+                tab.textContent = filename;
+                tab.onclick = () => openFile(filename);
+                tabs.appendChild(tab);
+            }
         }
 
-        function runCode() {
-            const code = document.getElementById('editor').value;
-            ide.interpreter.execute(code);
+        function openFile(filename) {
+            if (currentFile && files[currentFile]) {
+                files[currentFile] = document.getElementById('editor').value;
+            }
+            currentFile = filename;
+            document.getElementById('editor').value = files[filename] || '';
+            saveToStorage();
+            renderFileList();
+            renderTabs();
         }
 
         function newFile() {
             document.getElementById('newFileModal').style.display = 'flex';
+            document.getElementById('newFileName').value = '';
             document.getElementById('newFileName').focus();
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+        function closeModal() {
+            document.getElementById('newFileModal').style.display = 'none';
         }
 
-        function createNewFile() {
-            const name = document.getElementById('newFileName').value.trim();
+        function confirmNewFile() {
+            let name = document.getElementById('newFileName').value.trim();
             if (!name) {
-                alert('Digite um nome para o arquivo!');
+                logToConsole('Erro: Nome do arquivo vazio', 'error');
                 return;
             }
             if (!name.endsWith('.jx')) {
-                alert('O arquivo deve ter extensão .jx');
+                name += '.jx';
+            }
+            if (files[name]) {
+                logToConsole('Erro: Arquivo já existe', 'error');
                 return;
             }
-            
-            if (ide.fs.createFile(name, '# Novo arquivo JX\n')) {
-                ide.openFile(name);
-                closeModal('newFileModal');
-                document.getElementById('newFileName').value = '';
-                ide.interpreter.log(`📄 Arquivo ${name} criado!`, 'success');
-            }
+            files[name] = '# Novo arquivo JX\n';
+            openFile(name);
+            closeModal();
         }
 
-        function saveFile() {
-            ide.saveCurrentFile();
+        function saveFileLocal() {
+            // Salva o conteúdo atual no storage
+            files[currentFile] = document.getElementById('editor').value;
+            saveToStorage();
+            logToConsole('Arquivo salvo no armazenamento local!', 'success');
+        }
+
+        function downloadFile() {
+            const content = document.getElementById('editor').value;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            logToConsole('Arquivo ' + currentFile + ' baixado!', 'success');
         }
 
         function toggleDocs() {
-            ide.toggleDocs();
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.display = sidebar.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function logToConsole(message, type = 'info') {
+            const consoleDiv = document.getElementById('console');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry log-' + type;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = '[' + timestamp + '] ' + message;
+            consoleDiv.appendChild(entry);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
         }
 
         function clearConsole() {
-            ide.interpreter.clearConsole();
+            document.getElementById('console').innerHTML = '';
         }
 
-        // Initialize on load
-        window.onload = initIDE;
+        // Interpretador JX
+        function runCode() {
+            const code = document.getElementById('editor').value;
+            clearConsole();
+            logToConsole('Executando ' + currentFile + '...', 'info');
+            
+            try {
+                interpretJX(code);
+                logToConsole('Execução concluída!', 'success');
+            } catch (e) {
+                logToConsole('Erro: ' + e.message, 'error');
+            }
+        }
+
+        function interpretJX(code) {
+            const lines = code.split('\n');
+            let i = 0;
+            let outputBuffer = [];
+            let inLoop = false;
+            let loopStart = -1;
+            let loopCount = 0;
+            const maxLoops = 1000;
+            let variables = {};
+
+            while (i < lines.length && loopCount < maxLoops) {
+                let line = lines[i].trim();
+                
+                // Ignorar comentários e linhas vazias
+                if (line.startsWith('#') || line === '') {
+                    i++;
+                    continue;
+                }
+
+                // Detectar início de loop
+                if (line.toLowerCase().startsWith('loop')) {
+                    inLoop = true;
+                    loopStart = i + 1;
+                    i++;
+                    continue;
+                }
+
+                // Detectar fim de loop (stop)
+                if (line.toLowerCase() === 'stop()' || line.toLowerCase() === 'stop') {
+                    if (inLoop) {
+                        i = loopStart;
+                        loopCount++;
+                        continue;
+                    }
+                }
+
+                // Processar comandos
+                processLine(line, variables, outputBuffer);
+                
+                i++;
+            }
+
+            if (loopCount >= maxLoops) {
+                logToConsole('Aviso: Loop máximo atingido (' + maxLoops + ' iterações)', 'warning');
+            }
+        }
+
+        function processLine(line, variables, outputBuffer) {
+            const lowerLine = line.toLowerCase();
+
+            // Console.display
+            if (lowerLine.startsWith('console.display')) {
+                const match = line.match(/Console\.display\((.*)\)/i);
+                if (match) {
+                    let content = match[1].trim();
+                    content = evaluateExpression(content, variables);
+                    logToConsole(content, 'info');
+                }
+                return;
+            }
+
+            // back.line(n) - Volta para linha n, descartando estados
+            if (lowerLine.startsWith('back.line')) {
+                const match = line.match(/back\.line\((\d+)\)/i);
+                if (match) {
+                    const lineNum = parseInt(match[1]);
+                    logToConsole('[back.line] Voltando para linha ' + lineNum + ' (estados descartados)', 'warning');
+                    savedStates = []; // Descarta todos os estados salvos
+                }
+                return;
+            }
+
+            // back.linesave(n) - Volta para linha n, salvando estados
+            if (lowerLine.startsWith('back.linesave')) {
+                const match = line.match(/back\.linesave\((\d+)\)/i);
+                if (match) {
+                    const lineNum = parseInt(match[1]);
+                    // Salva o estado atual antes de voltar
+                    savedStates.push({ line: lineNum, buffer: [...outputBuffer], vars: {...variables} });
+                    logToConsole('[back.linesave] Voltando para linha ' + lineNum + ' (estado salvo)', 'success');
+                }
+                return;
+            }
+
+            // Wait
+            if (lowerLine.startsWith('wait')) {
+                const match = line.match(/Wait\((\d+)\)/i);
+                if (match) {
+                    const ms = parseInt(match[1]);
+                    logToConsole('[Wait] Esperando ' + ms + 'ms...', 'info');
+                }
+                return;
+            }
+
+            // Declaração de variável
+            if (lowerLine.startsWith('var ')) {
+                const match = line.match(/var\s+(\w+)\s*=\s*(.*)/i);
+                if (match) {
+                    const varName = match[1];
+                    let value = match[2].trim();
+                    value = evaluateExpression(value, variables);
+                    variables[varName] = value;
+                }
+                return;
+            }
+        }
+
+        function evaluateExpression(expr, variables) {
+            // Remove aspas duplas extras se houver
+            expr = expr.trim();
+            
+            // Substituir variáveis pelos seus valores
+            for (let varName in variables) {
+                const regex = new RegExp('\\b' + varName + '\\b', 'g');
+                expr = expr.replace(regex, variables[varName]);
+            }
+
+            // Processar concatenação de strings
+            // Dividir por + e processar cada parte
+            if (expr.includes('+')) {
+                const parts = expr.split('+');
+                let result = '';
+                for (let part of parts) {
+                    part = part.trim();
+                    // Remover aspas das strings literais
+                    if ((part.startsWith('"') && part.endsWith('"')) || 
+                        (part.startsWith("'") && part.endsWith("'"))) {
+                        part = part.slice(1, -1);
+                    }
+                    result += part;
+                }
+                return result;
+            }
+
+            // Se for string literal, remover aspas
+            if ((expr.startsWith('"') && expr.endsWith('"')) || 
+                (expr.startsWith("'") && expr.endsWith("'"))) {
+                return expr.slice(1, -1);
+            }
+
+            return expr;
+        }
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveFileLocal();
+            }
+        });
+
+        // Auto-save ao editar
+        document.getElementById('editor').addEventListener('input', function() {
+            files[currentFile] = this.value;
+            saveToStorage();
+        });
     </script>
 </body>
 </html>
