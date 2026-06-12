@@ -22,7 +22,7 @@ Características:
 - Uso de Loop e If 
 - Sistema de console próprio
 - Input por Console.input e input.detect
-- Renderização com Console.display e Console.back
+- Renderização com Console.display, Console.back, back.line e back.linesave
 - Suporte a Wait e Wait.frame
 
 Exemplo:
@@ -64,7 +64,7 @@ Features:
 - Loop If support
 - Custom console system
 - Input using Console.input and input.detect
-- Rendering with Console.display and Console.back
+- Rendering with Console.display, Console.back, back.line and back.linesave
 - Support for Wait and Wait.frame
 
 Example:
