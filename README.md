@@ -1,3 +1,4 @@
+![Logo JX](jxofficiallogo.png)
 JX Language
 version: 0.1
 Author: João Manoel Martins Silveira
